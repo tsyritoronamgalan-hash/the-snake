@@ -2,7 +2,6 @@ from random import choice, randint
 
 import pygame
 
-
 # Константы для размеров поля и сетки.
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
@@ -208,6 +207,7 @@ class Snake(GameObject):
         self.direction = choice(
             [UP, DOWN, LEFT, RIGHT]
         )
+
 
 def handle_keys(game_object):
     """Обрабатывает нажатия клавиш управления змейкой."""
