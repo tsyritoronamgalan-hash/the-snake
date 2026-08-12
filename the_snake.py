@@ -1,7 +1,7 @@
 from random import choice
 
-
 import pygame as pg
+
 
 # Константы размеров игрового поля.
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
@@ -32,6 +32,7 @@ pg.display.set_caption('Змейка | Стрелки — управление |
 # Настройка времени.
 clock = pg.time.Clock()
 
+
 class GameObject:
     """Базовый класс для игровых объектов."""
 
@@ -48,6 +49,7 @@ class GameObject:
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
+
 
 class Apple(GameObject):
     """Класс яблока."""
@@ -73,6 +75,7 @@ class Apple(GameObject):
     def draw(self):
         """Отрисовывает яблоко на игровом поле."""
         self.draw_cell(self.position, self.body_color)
+
 
 class Snake(GameObject):
     """Класс змейки."""
@@ -140,6 +143,7 @@ class Snake(GameObject):
         self.next_direction = None
         self.last = None
 
+
 def handle_keys(game_object):
     """Обрабатывает нажатия клавиш управления змейкой."""
     for event in pg.event.get():
@@ -163,6 +167,7 @@ def handle_keys(game_object):
 
             elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
                 game_object.next_direction = RIGHT
+
 
 def main():
     """Запускает игру и управляет основным игровым циклом."""
@@ -190,6 +195,7 @@ def main():
         apple.draw()
 
         pg.display.update()
+
 
 if __name__ == '__main__':
     main()
