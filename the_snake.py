@@ -1,8 +1,9 @@
 from random import choice
+
 import pygame as pg
 
 
-# Константы размеров игрового поля.
+# Константы для размеров поля и сетки.
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
@@ -44,7 +45,7 @@ class GameObject:
         """Отрисовывает игровой объект."""
 
     def draw_cell(self, position, color):
-        """Рисует одну клетку игрового поля."""
+        """Рисует квадрат игрового объекта."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, color, rect)
         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -60,16 +61,16 @@ class Apple(GameObject):
         self.randomize_position(snake_positions)
 
     def randomize_position(self, snake_positions):
-        """Устанавливает яблоко в свободную клетку игрового поля."""
-        free_positions = [
-            (x, y)
-            for x in range(0, SCREEN_WIDTH, GRID_SIZE)
-            for y in range(0, SCREEN_HEIGHT, GRID_SIZE)
-            if (x, y) not in snake_positions
-        ]
+        """Устанавливает яблоко в свободную клетку поля."""
+        while True:
+            position = (
+                choice(range(GRID_WIDTH)) * GRID_SIZE,
+                choice(range(GRID_HEIGHT)) * GRID_SIZE
+            )
 
-        if free_positions:
-            self.position = choice(free_positions)
+            if position not in snake_positions:
+                self.position = position
+                break
 
     def draw(self):
         """Отрисовывает яблоко на игровом поле."""
@@ -119,19 +120,15 @@ class Snake(GameObject):
 
     def draw(self):
         """Отрисовывает все сегменты змейки."""
-        for position in self.positions:
+        for position in self.positions[:-1]:
             self.draw_cell(position, self.body_color)
 
+        head_position = self.get_head_position()
+        self.draw_cell(head_position, self.body_color)
+
         if self.last:
-            last_rect = pg.Rect(
-                self.last,
-                (GRID_SIZE, GRID_SIZE)
-            )
-            pg.draw.rect(
-                screen,
-                BOARD_BACKGROUND_COLOR,
-                last_rect
-            )
+            last_rect = pg.Rect(self.last, (GRID_SIZE, GRID_SIZE))
+            pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def reset(self):
         """Сбрасывает змейку в начальное состояние."""
@@ -150,20 +147,17 @@ def handle_keys(game_object):
             pg.quit()
             raise SystemExit
 
-        if event.type == pg.KEYDOWN:
+        elif event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 pg.quit()
                 raise SystemExit
 
             elif event.key == pg.K_UP and game_object.direction != DOWN:
                 game_object.next_direction = UP
-
             elif event.key == pg.K_DOWN and game_object.direction != UP:
                 game_object.next_direction = DOWN
-
             elif event.key == pg.K_LEFT and game_object.direction != RIGHT:
                 game_object.next_direction = LEFT
-
             elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
                 game_object.next_direction = RIGHT
 
