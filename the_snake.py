@@ -2,7 +2,8 @@ from random import choice
 
 import pygame as pg
 
-# Константы размеров игрового поля
+
+# Константы размеров игрового поля.
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
@@ -53,14 +54,17 @@ class GameObject:
 class Apple(GameObject):
     """Класс яблока."""
 
-    def __init__(self, snake_positions):
+    def __init__(self):
         """Инициализирует яблоко и задаёт его случайную позицию."""
         super().__init__()
         self.body_color = APPLE_COLOR
-        self.randomize_position(snake_positions)
+        self.randomize_position()
 
-    def randomize_position(self, snake_positions):
-        """Устанавливает яблоко в свободную клетку поля."""
+    def randomize_position(self, snake_positions=None):
+        """Устанавливает яблоко в свободную клетку игрового поля."""
+        if snake_positions is None:
+            snake_positions = []
+
         while True:
             position = (
                 choice(range(GRID_WIDTH)) * GRID_SIZE,
@@ -166,7 +170,7 @@ def main():
     pg.init()
 
     snake = Snake()
-    apple = Apple(snake.positions)
+    apple = Apple()
 
     while True:
         clock.tick(SPEED)
