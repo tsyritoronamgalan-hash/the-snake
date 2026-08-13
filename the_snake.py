@@ -1,6 +1,6 @@
 from random import choice
-import pygame as pg
 
+import pygame as pg
 
 # Константы размеров игрового поля
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
